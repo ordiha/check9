@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farcaster User Info</title>
+</head>
+<body>
+    <h1>Farcaster User Info</h1>
+    <button onclick="fetchUserInfo()">Show User Info</button>
+    <div id="user-info"></div>
+
+    <script>
+        function fetchUserInfo() {
+            const fid = 19266; // Replace with actual Farcaster ID
+            const url = `https://corsproxy.io/?https://api.warpcast.com/v1/users/${fid}/casts`;
+
+            fetch(url, {
+                method: 'GET', // Ensure GET is used
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let info = data.result.map(cast => `<p>${cast.text}</p>`).join('');
+                document.getElementById('user-info').innerHTML = info;
+            })
+            .catch(error => {
+                document.getElementById('user-info').innerHTML = 'Error fetching user info';
+                console.error('Error fetching user info:', error);
+            });
+        }
+    </script>
+</body>
+</html>
